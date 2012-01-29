@@ -53,6 +53,96 @@ DESCRIPTION
     This module uses WWW::Curl and libcurl for best performance, I just test
     on Mac Lion and Linux, maybe works on Windows/Cygwin.
 
+METHODS
+  new()
+    bucket
+    bucket_account
+    bucket_password
+    api_domain
+
+  usage($path)
+        # whole bucket used storage
+        $upyun->usage;
+        # some dir/folder
+        say $upyun->usage('/dir1');
+        # some file size
+        say $upyun->usage('/dir1/demo1.jpg');
+
+    List bucket or path(folder or file) used space.
+
+  use_bucket($new_bucket_name,$new_account?,$new_password?)
+        # switch to new bucket,account/password same as current
+        $upyun->use_bucket('bucket2');
+        # switch to new bucket, also set new account/password
+        $upyun->use_bucket('bucket3','new_user','new_password');
+
+    Switch to another bucket, if omit new_account,new_password, use previous
+    defined.
+
+  mkdir($path)
+        my $ok = $upyun->mkdir('/path1/path2');
+
+    Build directory or path.
+
+  rmdir($path)
+        my $ok = $upyun->rmdir('/path1');
+
+    Delete the directory, it must be empty.
+
+  list($path)
+        my $dir_content_str = $upyun->list('/');
+
+    List files under the directory.
+
+    TODO: $dir_content_str is plain text, need to parse.
+
+  put($path,$bytes)
+        # it will auto mkdir.
+        my $ok = $upyun->put('/demo/1.txt','okokok');
+
+    Upload content to the file, it will auto create directories.
+
+    NOTE: According UpYun note, max directories deep level is limited to 10,
+    be careful.
+
+  get($path)
+        say $upyun->get('/demo/1.txt');
+
+    Get the file content.
+
+  delete($path)
+        my $ok = $upyun->delete('/demo/1.txt');
+
+    Delete the file.
+
+  reponse
+        my $http_response = $upyun->response;
+
+    Returns latest response,it's an instance of HTTP::Response.
+
+  res_content
+    Raw response content body.
+
+  is_success
+  is_error
+    These methods indicate if the response was informational, successful, or
+    an error. If the response code was 2xx code, is_success is true, else
+    is_error is true.
+
+  error_code
+    The code is a 3 digit number that encode the overall outcome of the last
+    HTTP response.
+
+  error_message
+    The message is a short human readable single line string that explains
+    the last response code.
+
+  do_request
+    Internal, send signed request to server.
+
+  sign
+    Private.
+
 TODOS
     Much jobs to do.
 
