@@ -4,22 +4,23 @@ name q(Net-UpYun);
 
 all_from q(lib/Net/UpYun.pm);
 
-requires q(Digest::MD5);
-requires q(HTTP::Date);
-requires q(HTTP::Response);
-requires q(Moose);
-requires q(Moose::Object);
-requires q(WWW::Curl::Easy);
-requires q(feature);
-requires q(namespace::autoclean);
+requires q(Digest::MD5) => 0;
+requires q(HTTP::Date) => 0;
+requires q(HTTP::Response) => 0;
+requires q(Moose) => 2.0401;
+requires q(Moose::Object) => 2.0401;
+requires q(WWW::Curl::Easy) => 4.15;
+requires q(feature) => 1.16;
+requires q(namespace::autoclean) => 0;
 
-test_requires q(Data::Dumper);
-test_requires q(HTTP::Date);
-test_requires q(Test::More);
+test_requires q(Data::Dumper) => 0;
+test_requires q(HTTP::Date) => 0;
+test_requires q(Test::More) => 0;
 
-bugtracker q(https://github.com/nightsailer/net-upyun/issues);
+bugtracker q(http://rt.cpan.org/NoAuth/Bugs.html?Dist=Net-UpYun);
 homepage q(http://search.cpan.org/dist/Net-UpYun);
 repository q(origin);
+
 # install_script glob('bin/*');
 auto_install;
 WriteAll;

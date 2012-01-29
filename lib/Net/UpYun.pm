@@ -11,7 +11,7 @@ use HTTP::Response;
 use URI::Escape;
 use Carp ();
 
-our $VERSION = '0.001';
+our $VERSION = eval '0.001';
 
 has $_ => (isa => 'Str',is => 'ro', required => 1, writer => '_'.$_ )
     for qw(bucket_account bucket_password);
@@ -240,6 +240,118 @@ Net::UpYun - Simple client library for UpYun Restful API.
 This module provides very simple interfaces to UpYun Cloud servie,for more details about UpYun storage/CDN clound service, see L<http://www.upyun.com/>.
 
 This module uses WWW::Curl and libcurl for best performance, I just test on Mac Lion and Linux, maybe works on Windows/Cygwin.
+
+
+=head1 METHODS
+
+=head2 new()
+
+=over
+
+=item bucket
+
+=item bucket_account
+
+=item bucket_password
+
+=item api_domain
+
+=back
+
+=head2 usage($path)
+
+    # whole bucket used storage
+    $upyun->usage;
+    # some dir/folder
+    say $upyun->usage('/dir1');
+    # some file size
+    say $upyun->usage('/dir1/demo1.jpg');
+
+List bucket or path(folder or file) used space. 
+
+=head2 use_bucket($new_bucket_name,$new_account?,$new_password?)
+
+    # switch to new bucket,account/password same as current
+    $upyun->use_bucket('bucket2');
+    # switch to new bucket, also set new account/password
+    $upyun->use_bucket('bucket3','new_user','new_password');
+
+Switch to another bucket, if omit new_account,new_password, use previous defined.
+
+=head2 mkdir($path)
+    
+    my $ok = $upyun->mkdir('/path1/path2');
+
+Build directory or path.
+
+=head2 rmdir($path)
+    
+    my $ok = $upyun->rmdir('/path1');
+
+Delete the directory, it must be empty.
+
+=head2 list($path)
+
+    my $dir_content_str = $upyun->list('/');
+    
+List files under the directory.
+
+TODO: $dir_content_str is plain text, need to parse.
+
+=head2 put($path,$bytes)
+    
+    # it will auto mkdir.
+    my $ok = $upyun->put('/demo/1.txt','okokok');
+
+Upload content to the file, it will auto create directories.
+
+NOTE: According UpYun note, max directories deep level is limited to 10, be careful.
+
+=head2 get($path)
+    
+    say $upyun->get('/demo/1.txt');
+
+Get the file content.
+
+=head2 delete($path)
+
+    my $ok = $upyun->delete('/demo/1.txt');
+
+Delete the file. 
+
+
+=head2 reponse
+
+    my $http_response = $upyun->response;
+
+Returns latest response,it's an instance of HTTP::Response.
+
+=head2 res_content
+
+Raw response content body.
+
+=head2 is_success
+
+=head2 is_error
+
+These methods indicate if the response was informational, successful, or an error.
+If the response code was 2xx code, is_success is true, else is_error is true.
+
+=head2 error_code
+
+The code is a 3 digit number that encode the overall outcome of the last HTTP response.
+
+=head2 error_message
+
+The message is a short human readable single line string that explains the last response code.
+
+=head2 do_request
+
+Internal, send signed request to server.
+
+=head2 sign
+
+Private.
 
 =head1 TODOS
 
